@@ -28,8 +28,11 @@ The second one is download the [Apache Kafka](https://kafka.apache.org/) in my c
 
 next step is run the Playbook:
 
-ansible-playbook -i ./inventory/ install-kafka.yml -u root -K
+```shell
+$ ansible-playbook -i ./inventory/ install-kafka.yml -u root -K
+```
 
+install-kafka.yml:
 ```yaml
 ---
 - name: Apache Kafka kafka_2.13-3.1.0 playbook install Red Hat 8.4
