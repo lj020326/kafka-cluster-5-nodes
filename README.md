@@ -1,5 +1,5 @@
 
-# How to install a cluster of five nodes Linux Red Hat 8 with [Ansible](http://www.ansible.com/)
+# How to install a cluster of five nodes Linux Red Hat 8 with Ansible
 
 Create kafka cluster Red Hat 8 with 5 nodes Ansible Playbook
 
