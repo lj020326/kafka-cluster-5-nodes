@@ -11,14 +11,17 @@ The first is we need our inventory file to define which machines or kind of VM, 
 
 # VMs Red Hat 8.4
 
-The example kafka inventory in hosts.ini:
-```ini
-[redhat8_5nodes]  
-rh8-nodo1  
-rh8-nodo2  
-rh8-nodo3  
-rh8-nodo4  
-rh8-nodo5
+The example kafka inventory in inventory/hosts.yml:
+```yaml
+---
+all:
+  children:
+    redhat8_5nodes:
+      rh8-nodo1: {}
+      rh8-nodo2: {}
+      rh8-nodo3: {}
+      rh8-nodo4: {}
+      rh8-nodo5: {}
 ```
 
 The second one is download the [Apache Kafka](https://kafka.apache.org/) in my case kafka\_2.13–3.1.0.tgz
