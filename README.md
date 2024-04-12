@@ -13,7 +13,7 @@ The first is we need our inventory file to define which machines or kind of VM, 
 
 The example kafka inventory in hosts.ini:
 ```ini
-[RedHat8–5nodes]  
+[redhat8_5nodes]  
 rh8-nodo1  
 rh8-nodo2  
 rh8-nodo3  

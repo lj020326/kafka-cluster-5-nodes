@@ -1,0 +1,9 @@
+---
+all:
+  children:
+    redhat8_5nodes:
+      rh8-nodo1: {}
+      rh8-nodo2: {}
+      rh8-nodo3: {}
+      rh8-nodo4: {}
+      rh8-nodo5: {}
