@@ -3,7 +3,7 @@
 
 Create kafka cluster Red Hat 8 with 5 nodes Ansible Playbook
 
-Apache Kafka is a well known real time streaming solution. This article it is about how to install a cluster of five nodes in Linux Red Hat 8 in a easy way and reproducible with no human intervention. The source code is [in this link to my Github repository](https://github.com/gialnet/kafka-cluster-5-nodes).
+Apache Kafka is a well known real time streaming solution. This article it is about how to install a cluster of five nodes in Linux Red Hat 8 in a easy way and reproducible with no human intervention.
 
 From the point of view of SRE (Site Reliability Engineering) they tray to enhance up-time greatly. The approach focuses on keeping the platform or service no matter what. Task like disaster prevention, risk mitigation, reliability and redundancy are of the most importance. The SRE teams main goal is find the best ways to prevent problems that can cause downtime. This is crucial especially when you manage large-scale system. Another benefit is that SRE helps brands **eliminate manual work** which gives developers much more time to innovate.
 
