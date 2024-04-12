@@ -38,8 +38,6 @@ ansible-playbook -i ./inventory/ install-kafka.yml -u root -K
   vars:
     package_name: kafka
     package_version: kafka_2.13-3.1.0
-    
-
   tasks:
 
   - name: Create kafka user and data folders
