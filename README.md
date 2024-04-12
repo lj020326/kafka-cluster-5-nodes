@@ -7,15 +7,19 @@ Apache Kafka is a well known real time streaming solution. This article it is ab
 
 From the point of view of SRE (Site Reliability Engineering) they tray to enhance up-time greatly. The approach focuses on keeping the platform or service no matter what. Task like disaster prevention, risk mitigation, reliability and redundancy are of the most importance. The SRE teams main goal is find the best ways to prevent problems that can cause downtime. This is crucial especially when you manage large-scale system. Another benefit is that SRE helps brands **eliminate manual work** which gives developers much more time to innovate.
 
-The first is we need our inventory file to define which machines or kind of VM, on premise or in a Cloud provider use. This file is usually in the folder /etc/ansible in case you have a Linux installation for Ansible just my case.
+The first is we need our inventory file to define which machines or kind of VM, on premise or in a Cloud provider use. 
 
-# VMs Red Hat 8.4  
+# VMs Red Hat 8.4
+
+The example kafka inventory in hosts.ini:
+```ini
 [RedHat8–5nodes]  
 rh8-nodo1  
 rh8-nodo2  
 rh8-nodo3  
 rh8-nodo4  
 rh8-nodo5
+```
 
 The second one is download the [Apache Kafka](https://kafka.apache.org/) in my case kafka\_2.13–3.1.0.tgz
 
