@@ -33,7 +33,7 @@ ansible-playbook -i ./inventory/ install-kafka.yml -u root -K
 ```yaml
 ---
 - name: Apache Kafka kafka_2.13-3.1.0 playbook install Red Hat 8.4
-  hosts: RedHat8-5nodes
+  hosts: redhat8_5nodes
   remote_user: root
   vars:
     package_name: kafka
