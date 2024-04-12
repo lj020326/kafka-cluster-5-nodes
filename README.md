@@ -3,16 +3,14 @@
 
 Create kafka cluster Red Hat 8 with 5 nodes Ansible Playbook
 
-![](https://miro.medium.com/v2/resize:fit:700/1*G5P5deXSFeelLRPszsAEVw.jpeg)
-
 Apache Kafka is a well known real time streaming solution. This article it is about how to install a cluster of five nodes in Linux Red Hat 8 in a easy way and reproducible with no human intervention. The source code is [in this link to my Github repository](https://github.com/gialnet/kafka-cluster-5-nodes).
 
 From the point of view of SRE (Site Reliability Engineering) they tray to enhance up-time greatly. The approach focuses on keeping the platform or service no matter what. Task like disaster prevention, risk mitigation, reliability and redundancy are of the most importance. The SRE teams main goal is find the best ways to prevent problems that can cause downtime. This is crucial especially when you manage large-scale system. Another benefit is that SRE helps brands **eliminate manual work** which gives developers much more time to innovate.
 
 The first is we need our inventory file to define which machines or kind of VM, on premise or in a Cloud provider use. This file is usually in the folder /etc/ansible in case you have a Linux installation for Ansible just my case.
 
-\# VMs Red Hat 8.4  
-\[RedHat8–5nodes\]  
+# VMs Red Hat 8.4  
+[RedHat8–5nodes]  
 rh8-nodo1  
 rh8-nodo2  
 rh8-nodo3  
@@ -25,8 +23,82 @@ next step is run the Playbook:
 
 ansible-playbook -i /etc/ansible/hosts install-kafka.yml -u root -K
 
-```
-<span id="a0e7" data-selectable-paragraph="">---</span><span id="255d" data-selectable-paragraph="">- name: Apache Kafka kafka_2.13-3.1.0 playbook install Red Hat 8.4</span><span id="70f3" data-selectable-paragraph="">hosts: RedHat8-5nodes</span><span id="1292" data-selectable-paragraph="">remote_user: root</span><span id="2cf3" data-selectable-paragraph="">vars:</span><span id="7f8e" data-selectable-paragraph="">package_name: kafka</span><span id="69b4" data-selectable-paragraph="">package_version: kafka_2.13-3.1.0</span><span id="a840" data-selectable-paragraph="">tasks:</span><span id="78f0" data-selectable-paragraph="">- name: Create kafka user and data folders</span><span id="1181" data-selectable-paragraph="">shell: |</span><span id="4b72" data-selectable-paragraph="">useradd kafka</span><span id="3967" data-selectable-paragraph="">mkdir -p /data/kafka</span><span id="6047" data-selectable-paragraph="">mkdir -p /data/zookeeper</span><span id="3110" data-selectable-paragraph="">echo {{inventory_hostname}} | tail -c 2 &gt; /data/zookeeper/myid</span><span id="2979" data-selectable-paragraph="">chown -R kafka:kafka /data/kafka*</span><span id="7ce9" data-selectable-paragraph="">chown -R kafka:kafka /data/zookeeper*</span><span id="bf7e" data-selectable-paragraph="">- name: Copy binary to /opt</span><span id="3c50" data-selectable-paragraph="">ansible.builtin.copy:</span><span id="0cfd" data-selectable-paragraph="">src: kafka_2.13-3.1.0.tgz</span><span id="5656" data-selectable-paragraph="">dest: /opt</span><span id="b746" data-selectable-paragraph="">owner: kafka</span><span id="91a4" data-selectable-paragraph="">group: kafka</span><span id="d607" data-selectable-paragraph="">- name: Extract binary</span><span id="23bb" data-selectable-paragraph="">ansible.builtin.unarchive:</span><span id="567f" data-selectable-paragraph="">src: /opt/kafka_2.13-3.1.0.tgz</span><span id="f0ef" data-selectable-paragraph="">dest: /opt</span><span id="517e" data-selectable-paragraph="">owner: kafka</span><span id="bf8f" data-selectable-paragraph="">group: kafka</span><span id="d4bc" data-selectable-paragraph="">remote_src: yes</span><span id="510e" data-selectable-paragraph="">- name: Create symbolic link to folder kafka</span><span id="738f" data-selectable-paragraph="">shell: |</span><span id="523d" data-selectable-paragraph="">ln -s /opt/kafka_2.13-3.1.0 /opt/kafka</span><span id="8f79" data-selectable-paragraph="">chown -R kafka:kafka /opt/kafka*</span><span id="2a29" data-selectable-paragraph="">- name: Createt Zookeeper system service</span><span id="4f4b" data-selectable-paragraph="">ansible.builtin.template:</span><span id="159c" data-selectable-paragraph="">src: zookeeper.service</span><span id="84f5" data-selectable-paragraph="">dest: /etc/systemd/system/zookeeper.service</span><span id="b001" data-selectable-paragraph="">owner: root</span><span id="68a7" data-selectable-paragraph="">group: root</span><span id="e259" data-selectable-paragraph="">- name: Createt Kafka system service</span><span id="4a1c" data-selectable-paragraph="">ansible.builtin.template:</span><span id="10f2" data-selectable-paragraph="">src: kafka.service</span><span id="4e3f" data-selectable-paragraph="">dest: /etc/systemd/system/kafka.service</span><span id="c448" data-selectable-paragraph="">owner: root</span><span id="e712" data-selectable-paragraph="">group: root</span><span id="37c1" data-selectable-paragraph="">- name: Select Server config file by node name</span><span id="d157" data-selectable-paragraph="">ansible.builtin.template:</span><span id="70bb" data-selectable-paragraph="">src: server-{{inventory_hostname}}.properties</span><span id="fc7d" data-selectable-paragraph="">dest: /opt/kafka/config/server.properties</span><span id="625a" data-selectable-paragraph="">owner: kafka</span><span id="8eb5" data-selectable-paragraph="">group: kafka</span><span id="c28b" data-selectable-paragraph="">- name: Select Zookeeper config file by node name</span><span id="70c6" data-selectable-paragraph="">ansible.builtin.template:</span><span id="6407" data-selectable-paragraph="">src: zookeeper.properties</span><span id="910f" data-selectable-paragraph="">dest: /opt/kafka/config/zookeeper.properties</span><span id="9e21" data-selectable-paragraph="">owner: kafka</span><span id="7282" data-selectable-paragraph="">group: kafka</span><span id="8062" data-selectable-paragraph="">- name: start services Zookeeper and Kafka</span><span id="754d" data-selectable-paragraph="">shell: |</span><span id="80e0" data-selectable-paragraph="">systemctl daemon-reload</span><span id="3082" data-selectable-paragraph="">systemctl start zookeeper</span><span id="c7e2" data-selectable-paragraph="">systemctl start kafka</span><span id="a0d1" data-selectable-paragraph="">systemctl enable zookeeper.service</span><span id="ad73" data-selectable-paragraph="">systemctl enable kafka.service</span>
+```yaml
+---
+- name: Apache Kafka kafka_2.13-3.1.0 playbook install Red Hat 8.4
+  hosts: RedHat8-5nodes
+  remote_user: root
+  vars:
+    package_name: kafka
+    package_version: kafka_2.13-3.1.0
+    
+
+  tasks:
+
+  - name: Create kafka user and data folders
+    shell: |
+      useradd kafka
+      mkdir -p /data/kafka
+      mkdir -p /data/zookeeper
+      echo {{inventory_hostname}} | tail -c 2 > /data/zookeeper/myid
+      chown -R kafka:kafka /data/kafka*
+      chown -R kafka:kafka /data/zookeeper*
+
+  - name: Copy binary to /opt
+    ansible.builtin.copy:
+      src: kafka_2.13-3.1.0.tgz
+      dest: /opt
+      owner: kafka
+      group: kafka
+
+  - name: Extract binary
+    ansible.builtin.unarchive:
+      src: /opt/kafka_2.13-3.1.0.tgz
+      dest: /opt
+      owner: kafka
+      group: kafka
+      remote_src: yes
+
+  - name: Create symbolic link to folder kafka
+    shell: |
+      ln -s /opt/kafka_2.13-3.1.0 /opt/kafka
+      chown -R kafka:kafka /opt/kafka*
+
+  - name: Createt Zookeeper system service
+    ansible.builtin.template:
+      src: zookeeper.service
+      dest: /etc/systemd/system/zookeeper.service
+      owner: root
+      group: root
+
+  - name: Createt Kafka system service
+    ansible.builtin.template:
+      src: kafka.service
+      dest: /etc/systemd/system/kafka.service
+      owner: root
+      group: root
+
+  - name: Select Server config file by node name
+    ansible.builtin.template:
+      src: server-{{inventory_hostname}}.properties
+      dest: /opt/kafka/config/server.properties
+      owner: kafka
+      group: kafka
+
+  - name: Select Zookeeper config file by node name
+    ansible.builtin.template:
+      src: zookeeper.properties
+      dest: /opt/kafka/config/zookeeper.properties
+      owner: kafka
+      group: kafka
+
+  - name: start services Zookeeper and Kafka
+    shell: |
+      systemctl daemon-reload
+      systemctl start zookeeper
+      systemctl start kafka
+      systemctl enable zookeeper.service
+      systemctl enable kafka.service
 ```
 
 Really simple a nice way to implement it Kafka cluster.
