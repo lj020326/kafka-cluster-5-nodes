@@ -24,11 +24,11 @@ all:
       rh8-nodo5: {}
 ```
 
-The second one is download the [Apache Kafka](https://kafka.apache.org/) in my case kafka\_2.13–3.1.0.tgz
+The second one is download the [Apache Kafka](https://kafka.apache.org/) in my case kafka_2.13–3.1.0.tgz
 
 next step is run the Playbook:
 
-ansible-playbook -i /etc/ansible/hosts install-kafka.yml -u root -K
+ansible-playbook -i ./inventory/ install-kafka.yml -u root -K
 
 ```yaml
 ---
